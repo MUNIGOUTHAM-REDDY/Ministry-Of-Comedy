@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Ministry of Comedy — Koramangala</title>
+<meta name="description" content="A Comedy Club in Koramangala. Book tickets for stand-up shows.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --mint:#01B480;
+    --mint-deep:#018B62;
+    --mint-soft:#A8E6CF;
+    --cream:#F5E6CC;
+    --cream-bg:#FAF3E3;
+    --ink:#0A0A0A;
+    --ink-soft:#2A2A2A;
+    --mute:#6B6660;
+    --line:rgba(10,10,10,0.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{
+    background:var(--cream-bg);
+    color:var(--ink);
+    font-family:'Bricolage Grotesque',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  body{overflow-x:hidden;min-height:100vh;}
+  img{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  button{font:inherit;cursor:pointer;border:0;background:0;color:inherit;}
+
+  /* ============ APP SHELL ============ */
+  .app{max-width:440px;margin:0 auto;padding:0 20px 140px;position:relative;}
+
+  /* ============ STATUS BAR ============ */
+  .status{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 0 14px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--mute);
+  }
+  .status .live{display:flex;align-items:center;gap:7px;color:var(--ink);}
+  .status .dot{width:7px;height:7px;border-radius:50%;background:var(--mint);position:relative;}
+  .status .dot::after{
+    content:"";position:absolute;inset:-4px;border-radius:50%;
+    background:var(--mint);opacity:.3;animation:ping 1.6s infinite;
+  }
+  @keyframes ping{0%{transform:scale(.5);opacity:.6;}100%{transform:scale(1.6);opacity:0;}}
+
+  /* ============ HEADER ============ */
+  .header{
+    display:flex;flex-direction:column;align-items:center;gap:14px;
+    padding:8px 0 20px;text-align:center;
+  }
+  .logo-mark{
+    width:88px;height:88px;border-radius:50%;
+    box-shadow:0 8px 28px -8px rgba(1,180,128,.45), 0 0 0 1px rgba(0,0,0,.06);
+  }
+  .name{
+    font-family:'Fraunces',serif;font-weight:600;font-size:28px;line-height:1;
+    letter-spacing:-.5px;
+  }
+  .name em{font-style:italic;font-weight:400;color:var(--mint-deep);}
+  .tag{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+    color:var(--mute);text-transform:uppercase;
+  }
+  .tag b{color:var(--ink);font-weight:600;}
+
+  /* ============ PRESS QUOTE ============ */
+  .press{
+    margin:8px auto 24px;max-width:340px;text-align:center;
+    font-family:'Fraunces',serif;font-style:italic;font-size:17px;line-height:1.4;
+    color:var(--ink-soft);
+  }
+  .press::before{content:"“";font-size:22px;color:var(--mint);}
+  .press::after{content:"”";font-size:22px;color:var(--mint);}
+  .press cite{
+    display:block;margin-top:8px;
+    font-family:'JetBrains Mono',monospace;font-style:normal;
+    font-size:10px;letter-spacing:.18em;color:var(--mute);text-transform:uppercase;
+  }
+
+  /* ============ FEATURED CARD ============ */
+  .featured{
+    display:block;background:var(--ink);color:var(--cream);
+    border-radius:20px;overflow:hidden;
+    box-shadow:0 20px 50px -20px rgba(0,0,0,.4);
+    margin-bottom:24px;position:relative;
+  }
+  .featured-img{
+    width:100%;aspect-ratio:3/4;object-fit:cover;display:block;
+    transition:transform .6s ease;
+  }
+  .featured:hover .featured-img{transform:scale(1.03);}
+  .featured-body{padding:18px 20px 20px;}
+  .featured-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--mint);color:var(--ink);
+    padding:5px 10px;border-radius:50px;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;
+    text-transform:uppercase;font-weight:600;margin-bottom:10px;
+  }
+  .featured-badge::before{
+    content:"";width:6px;height:6px;border-radius:50%;background:var(--ink);
+  }
+  .featured-title{
+    font-family:'Fraunces',serif;font-weight:600;font-size:24px;line-height:1.15;
+    letter-spacing:-.3px;margin-bottom:8px;
+  }
+  .featured-meta{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-top:14px;padding-top:14px;border-top:1px solid rgba(245,230,204,.15);
+  }
+  .featured-when{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;
+    color:var(--mint-soft);
+  }
+  .featured-cta{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--mint);color:var(--ink);
+    padding:9px 14px;border-radius:50px;
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:13px;
+    letter-spacing:.02em;
+  }
+  .featured-cta svg{width:13px;height:13px;}
+
+  /* ============ SECTION HEADER ============ */
+  .section-head{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    margin:8px 0 14px;
+  }
+  .section-head h2{
+    font-family:'Fraunces',serif;font-weight:600;font-size:22px;line-height:1;
+    letter-spacing:-.3px;
+  }
+  .section-head .count{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+    color:var(--mute);text-transform:uppercase;
+  }
+
+  /* ============ GRID ============ */
+  .grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  }
+  .card{
+    display:block;background:#fff;border-radius:14px;overflow:hidden;
+    box-shadow:0 4px 16px -6px rgba(0,0,0,.12), 0 0 0 1px var(--line);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .card:active{transform:scale(.98);}
+  .card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 14px 30px -10px rgba(0,0,0,.2), 0 0 0 1px var(--line);
+  }
+  .card-img{
+    width:100%;aspect-ratio:3/4;object-fit:cover;background:#eee;
+  }
+  .card-body{padding:10px 12px 12px;}
+  .card-when{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;
+    color:var(--mint-deep);text-transform:uppercase;font-weight:600;
+    margin-bottom:4px;
+  }
+  .card-title{
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:13px;
+    line-height:1.25;color:var(--ink);
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    min-height:32px;
+  }
+
+  /* ============ INFO STRIP ============ */
+  .info{
+    margin-top:28px;background:var(--ink);color:var(--cream);
+    border-radius:18px;padding:18px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+    box-shadow:0 10px 30px -12px rgba(0,0,0,.35);
+  }
+  .info-left .l1{
+    font-family:'Fraunces',serif;font-weight:600;font-size:18px;line-height:1;
+  }
+  .info-left .l2{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;
+    color:var(--mint-soft);margin-top:6px;
+  }
+  .info-arrow{
+    width:36px;height:36px;border-radius:50%;background:var(--mint);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink);
+  }
+
+  /* ============ SOCIAL ROW ============ */
+  .socials{
+    margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  }
+  .soc{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;
+    transition:transform .2s, background .2s;
+  }
+  .soc:hover{transform:translateY(-2px);background:var(--ink);color:var(--cream);}
+  .soc:hover svg{stroke:var(--cream);}
+  .soc svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.8;transition:stroke .2s;}
+  .soc span{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;
+    text-transform:uppercase;font-weight:600;
+  }
+
+  /* ============ FOOTER ============ */
+  .ft{
+    margin-top:36px;padding-top:24px;border-top:1px solid var(--line);
+    text-align:center;
+  }
+  .ft .em{
+    font-family:'Fraunces',serif;font-style:italic;font-size:14px;
+    color:var(--mute);
+  }
+  .ft .em b{color:var(--ink);font-style:normal;font-weight:600;}
+  .ft .credit{
+    margin-top:10px;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;
+    color:var(--mute);text-transform:uppercase;
+  }
+
+  /* ============ STICKY CTA ============ */
+  .sticky{
+    position:fixed;left:50%;transform:translateX(-50%);bottom:18px;
+    width:calc(100% - 36px);max-width:404px;z-index:50;
+    background:var(--mint);color:var(--ink);
+    border-radius:60px;padding:14px 22px;
+    display:flex;align-items:center;justify-content:space-between;
+    box-shadow: 0 18px 40px -10px rgba(1,180,128,.5), 0 0 0 4px rgba(250,243,227,.7);
+    animation:rise .7s .3s both;font-weight:700;
+  }
+  @keyframes rise{from{transform:translate(-50%,80px);opacity:0;}to{transform:translate(-50%,0);opacity:1;}}
+  .sticky .t1{font-size:14px;line-height:1;letter-spacing:-.1px;}
+  .sticky .t2{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;
+    margin-top:4px;display:block;opacity:.75;font-weight:400;
+  }
+  .sticky .arr{
+    width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--mint);
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* ============ EVENT DETAIL VIEW ============ */
+  .detail{
+    display:none;position:fixed;inset:0;z-index:200;background:var(--cream-bg);
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    animation:slideUp .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .detail.open{display:block;}
+  @keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+
+  .detail-wrap{max-width:440px;margin:0 auto;padding:0 20px 140px;}
+
+  .detail-top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 0 16px;position:sticky;top:0;background:var(--cream-bg);z-index:5;
+  }
+  .back-btn{
+    width:40px;height:40px;border-radius:50%;background:#fff;
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 12px -4px rgba(0,0,0,.1);
+  }
+  .share-btn{
+    width:40px;height:40px;border-radius:50%;background:#fff;
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 12px -4px rgba(0,0,0,.1);
+  }
+  .detail-top span{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
+    color:var(--mute);text-transform:uppercase;
+  }
+
+  .detail-poster{
+    width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:20px;
+    box-shadow:0 24px 50px -20px rgba(0,0,0,.35);
+    background:#222;
+  }
+  .detail-poster-wrap{position:relative;}
+  .detail-poster-wrap .pill{
+    position:absolute;top:14px;left:14px;
+    background:var(--mint);color:var(--ink);
+    padding:6px 12px;border-radius:50px;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;
+    text-transform:uppercase;font-weight:700;
+    box-shadow:0 6px 16px -4px rgba(0,0,0,.25);
+  }
+
+  .detail-title{
+    margin-top:24px;font-family:'Fraunces',serif;font-weight:600;
+    font-size:32px;line-height:1.05;letter-spacing:-.8px;
+  }
+  .detail-sub{
+    margin-top:8px;font-size:15px;color:var(--mute);line-height:1.4;
+  }
+
+  .detail-meta{
+    margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  }
+  .meta-tile{
+    background:#fff;border-radius:14px;padding:14px 16px;
+    border:1px solid var(--line);
+  }
+  .meta-tile .lbl{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;
+    color:var(--mute);text-transform:uppercase;
+  }
+  .meta-tile .val{
+    margin-top:6px;font-family:'Fraunces',serif;font-weight:600;font-size:16px;
+    line-height:1.1;
+  }
+
+  .detail-section{margin-top:28px;}
+  .detail-section h3{
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:700;
+    font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--mute);margin-bottom:12px;
+  }
+  .detail-section p{
+    font-family:'Fraunces',serif;font-size:17px;line-height:1.5;color:var(--ink-soft);
+  }
+
+  /* PERFORMER CARD */
+  .performer{
+    background:#fff;border-radius:18px;padding:16px;
+    display:flex;align-items:center;gap:14px;border:1px solid var(--line);
+  }
+  .performer-avatar{
+    width:56px;height:56px;border-radius:50%;background:var(--mint);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:var(--ink);
+    flex-shrink:0;
+  }
+  .performer-info .name{
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;
+    line-height:1;
+  }
+  .performer-info .role{
+    margin-top:5px;font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:.15em;color:var(--mute);text-transform:uppercase;
+  }
+
+  /* AMENITIES */
+  .amenities{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    background:#fff;border:1px solid var(--line);border-radius:50px;
+    padding:8px 14px;font-size:12px;font-weight:500;color:var(--ink-soft);
+    display:flex;align-items:center;gap:6px;
+  }
+  .chip svg{width:13px;height:13px;stroke:var(--mint-deep);fill:none;stroke-width:2;}
+
+  /* DETAIL STICKY BOOK */
+  .detail-book{
+    position:fixed;left:50%;transform:translateX(-50%);bottom:18px;
+    width:calc(100% - 36px);max-width:404px;z-index:60;
+    background:var(--ink);color:var(--cream);
+    border-radius:60px;padding:6px 6px 6px 22px;
+    display:flex;align-items:center;justify-content:space-between;
+    box-shadow:0 18px 40px -10px rgba(0,0,0,.4), 0 0 0 4px rgba(250,243,227,.7);
+  }
+  .detail-book .price{
+    font-family:'Fraunces',serif;font-weight:600;font-size:18px;line-height:1;
+  }
+  .detail-book .price small{
+    display:block;font-family:'JetBrains Mono',monospace;font-style:normal;
+    font-size:9px;letter-spacing:.18em;color:var(--mint-soft);margin-top:4px;font-weight:400;
+  }
+  .detail-book .go{
+    background:var(--mint);color:var(--ink);
+    padding:14px 22px;border-radius:50px;font-weight:700;font-size:13px;
+    letter-spacing:.02em;display:flex;align-items:center;gap:6px;
+  }
+  .detail-book .go svg{width:13px;height:13px;}
+
+  /* Hide app when detail open */
+  body.locked{overflow:hidden;}
+  body.locked .app{filter:blur(4px);transition:filter .3s;}
+
+  /* page-load reveal */
+  .reveal{opacity:0;transform:translateY(10px);animation:rev .6s forwards;}
+  .reveal-1{animation-delay:.05s;}
+  .reveal-2{animation-delay:.12s;}
+  .reveal-3{animation-delay:.18s;}
+  .reveal-4{animation-delay:.26s;}
+  .reveal-5{animation-delay:.34s;}
+  .reveal-6{animation-delay:.42s;}
+  @keyframes rev{to{opacity:1;transform:translateY(0);}}
+
+  /* small screen safety */
+  @media (max-width:380px){
+    .featured-title{font-size:21px;}
+    .detail-title{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- STATUS -->
+  <div class="status reveal reveal-1">
+    <span class="live"><span class="dot"></span> Open · Koramangala</span>
+    <span>Est. 2023</span>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header reveal reveal-2">
+    <img class="logo-mark" src="assets/logo.png" alt="Ministry of Comedy logo">
+    <h1 class="name">Ministry <em>of</em> Comedy</h1>
+    <div class="tag"><b>Bangalore’s</b> · Stand-Up Room</div>
+  </header>
+
+  <!-- PRESS QUOTE -->
+  <p class="press reveal reveal-3">
+    A great little room.
+    <cite>— Daniel Sloss</cite>
+  </p>
+
+  <!-- FEATURED EVENT -->
+  <a class="featured reveal reveal-3" data-event="0" href="#">
+    <img class="featured-img" src="assets/posters/kora-nights.png" alt="Koramangala Comedy Nights">
+    <div class="featured-body">
+      <span class="featured-badge">Next Up · This Week</span>
+      <div class="featured-title">Koramangala Comedy Nights</div>
+      <div class="featured-meta">
+        <span class="featured-when">FRI · 5 PM · ₹299</span>
+        <span class="featured-cta">
+          Book Now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+    </div>
+  </a>
+
+  <!-- ALL EVENTS -->
+  <div class="section-head reveal reveal-4">
+    <h2>Upcoming shows</h2>
+    <span class="count" id="evt-count">20 shows</span>
+  </div>
+
+  <div class="grid reveal reveal-4" id="grid"></div>
+
+  <!-- LOCATION -->
+  <a class="info reveal reveal-5" href="https://maps.google.com/?q=Ministry+of+Comedy+Koramangala">
+    <div class="info-left">
+      <div class="l1">Find the room</div>
+      <div class="l2">5th Block · Koramangala · BLR</div>
+    </div>
+    <span class="info-arrow">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </span>
+  </a>
+
+  <!-- SOCIAL -->
+  <div class="socials reveal reveal-5">
+    <a class="soc" href="https://instagram.com/theministryofcomedy">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+      <span>Instagram</span>
+    </a>
+    <a class="soc" href="https://wa.me/">
+      <svg viewBox="0 0 24 24"><path d="M3 21l2-6a8 8 0 113 3l-5 3z"/><path d="M8 12c1 2 2 3 4 4"/></svg>
+      <span>WhatsApp</span>
+    </a>
+    <a class="soc" href="https://youtube.com">
+      <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg>
+      <span>YouTube</span>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="ft reveal reveal-6">
+    <div class="em">Comedy is a <b>serious</b> business.</div>
+    <div class="credit">© Ministry of Comedy · 2026</div>
+  </div>
+</div>
+
+<!-- STICKY CTA -->
+<a class="sticky" id="stickyCta" href="#">
+  <div>
+    <div class="t1">Tonight at the Ministry</div>
+    <span class="t2">Tap to see the lineup</span>
+  </div>
+  <span class="arr">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+  </span>
+</a>
+
+<!-- ============ EVENT DETAIL VIEW ============ -->
+<div class="detail" id="detail">
+  <div class="detail-wrap">
+
+    <div class="detail-top">
+      <button class="back-btn" onclick="closeDetail()" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <span>Event Detail</span>
+      <button class="share-btn" aria-label="Share">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+      </button>
+    </div>
+
+    <div class="detail-poster-wrap">
+      <img class="detail-poster" id="dPoster" alt="">
+      <span class="pill" id="dPill">Live · Stand-Up</span>
+    </div>
+
+    <h2 class="detail-title" id="dTitle"></h2>
+    <p class="detail-sub" id="dSub"></p>
+
+    <div class="detail-meta">
+      <div class="meta-tile">
+        <div class="lbl">Date</div>
+        <div class="val" id="dDate"></div>
+      </div>
+      <div class="meta-tile">
+        <div class="lbl">Time</div>
+        <div class="val" id="dTime"></div>
+      </div>
+      <div class="meta-tile">
+        <div class="lbl">Venue</div>
+        <div class="val">The Ministry</div>
+      </div>
+      <div class="meta-tile">
+        <div class="lbl">Language</div>
+        <div class="val" id="dLang">English</div>
+      </div>
+    </div>
+
+    <section class="detail-section">
+      <h3>About the show</h3>
+      <p id="dAbout"></p>
+    </section>
+
+    <section class="detail-section">
+      <h3>Performer</h3>
+      <div class="performer">
+        <div class="performer-avatar" id="dInitial">M</div>
+        <div class="performer-info">
+          <div class="name" id="dPerformer"></div>
+          <div class="role">Stand-Up Comedian</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-section">
+      <h3>Good to know</h3>
+      <div class="amenities">
+        <span class="chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg> 18+ only</span>
+        <span class="chip"><svg viewBox="0 0 24 24"><path d="M3 8h18M3 12h18M3 16h18"/></svg> 60–90 mins</span>
+        <span class="chip"><svg viewBox="0 0 24 24"><path d="M12 21s-7-7-7-12a7 7 0 0114 0c0 5-7 12-7 12z"/><circle cx="12" cy="9" r="2"/></svg> Koramangala 5th Block</span>
+        <span class="chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Reach 15 min early</span>
+      </div>
+    </section>
+
+    <section class="detail-section">
+      <h3>House rules</h3>
+      <p>No phones during the show. No heckling. Latecomers wait outside till a break. Be kind to the comic, the staff, and each other.</p>
+    </section>
+  </div>
+
+  <a class="detail-book" id="dBook" href="#" target="_blank" rel="noopener">
+    <div class="price">
+      <span id="dPrice">₹299</span>
+      <small id="dPriceSub">onwards · BookMyShow</small>
+    </div>
+    <span class="go">
+      Book Tickets
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </span>
+  </a>
+</div>
+
+<script>
+const events = [
+  { poster:"kora-nights.png", title:"Koramangala Comedy Nights", performer:"Anand Rathnam", date:"Sat, 17 May", time:"5 PM", price:"₹299", lang:"English",
+    about:"A flagship multi-comic showcase featuring the room’s sharpest regulars and rising voices. Tight sets, fast laughs, and the warm crowd Koramangala is known for.",
+    url:"https://in.bookmyshow.com/events/ignorance-is-key-stand-up-solo-by-anand-rathnam/ET00316055" },
+  { poster:"mohd-suhel-7pm.png", title:"Mohd Suhel Live!", performer:"Mohd Suhel", date:"Sat, 17 May", time:"7 PM", price:"₹399", lang:"Hindi · English",
+    about:"Mohd Suhel brings his observational, slightly absurd take on Indian middle-class life. Sharp punchlines, sharper callbacks. A regular sell-out.",
+    url:"https://in.bookmyshow.com/events/mohd-suhel-live/ET00408882" },
+  { poster:"mohd-suhel-8pm.png", title:"Mohd Suhel Live! · Late", performer:"Mohd Suhel", date:"Sat, 17 May", time:"8 PM", price:"₹399", lang:"Hindi · English",
+    about:"Late-show edition with extended material. Same comic, hotter room, looser jokes.",
+    url:"https://in.bookmyshow.com/events/mohd-suhel-live/ET00408882" },
+  { poster:"mohd-suhel-10pm.png", title:"Mohd Suhel Live! · Late Night", performer:"Mohd Suhel", date:"Sat, 17 May", time:"10 PM", price:"₹399", lang:"Hindi · English",
+    about:"The 10 PM crowd is a different animal. Show up loose and ready to laugh.",
+    url:"https://in.bookmyshow.com/events/mohd-suhel-live/ET00408882" },
+  { poster:"pronoy.png", title:"Defective Piece — Pronoy Chowdhury LIVE!", performer:"Pronoy Chowdhury", date:"Sun, 18 May", time:"6 PM", price:"₹349", lang:"English",
+    about:"Pronoy’s solo hour — a self-deprecating, fast-paced tour through what he calls being a “defective piece.” Personal, biting, and oddly tender.",
+    url:"https://in.bookmyshow.com/events/pronoy-chowdhury-live/ET00460996" },
+  { poster:"late-night.png", title:"Very Late Night Comedy Show", performer:"Open Lineup", date:"Sun, 18 May", time:"11:59 PM", price:"₹199", lang:"English · Hindi",
+    about:"The lights stay on after midnight. Rotating lineup of comics testing their riskiest material on the most game crowd in town.",
+    url:"https://in.bookmyshow.com/events/kaafi-mazzedaar-jokes-koramangala/ET00420407" },
+  { poster:"tushar-basra.png", title:"Bali Ka Basra — by Tushar Basra", performer:"Tushar Basra", date:"Wed, 21 May", time:"8 PM", price:"₹349", lang:"Hindi",
+    about:"A stand-up special trial — sacrificial in name only. Tushar Basra workshops his next hour in front of you. Expect rough edges and big swings.",
+    url:"https://in.bookmyshow.com/events/tushar-basra-live-a-stand-up-comedy-trial/ET00462078" },
+  { poster:"gautham.png", title:"Gautham Govindan Live Comedy", performer:"Gautham Govindan", date:"From 22 May", time:"Multiple shows", price:"₹399", lang:"English",
+    about:"Multi-night residency. Gautham’s observational stand-up — measured, dry, and quietly devastating.",
+    url:"https://in.bookmyshow.com/events/gautham-govindan-live/ET00493183" },
+  { poster:"mahahadevan.png", title:"MaHAHAdevan — Malayalam Crowd Work", performer:"MaHAHAdevan", date:"Fri, 23 May", time:"8 PM", price:"₹349", lang:"Malayalam",
+    about:"A Malayalam crowd-work special. No setlist, no script — just the comic, the room, and whoever sits in the front two rows.",
+    url:"https://in.bookmyshow.com/events/mahahadevan-live-a-malayalam-crowd-work-show/ET00449075" },
+  { poster:"ashwin.png", title:"Ashwin Srinivas Live!", performer:"Ashwin Srinivas", date:"Fri, 23 May", time:"6 PM", price:"₹349", lang:"English",
+    about:"Ashwin’s storytelling hour. Personal, well-built, and the kind of show that doesn’t feel like a comedy gig until you’ve laughed three times.",
+    url:"https://in.bookmyshow.com/events/ashwin-srinivas-live/ET00352527" },
+  { poster:"haseeb.png", title:"Haseeb Khan — Trial Standup", performer:"Haseeb Khan", date:"Sat, 24 May", time:"5 PM", price:"₹249", lang:"Hindi · English",
+    about:"A trial set — Haseeb’s testing all-new material before recording. Be part of the room that shaped the special.",
+    url:"https://in.bookmyshow.com/events/haseeb-khan-live-trial-standup-comedy-show/ET00146458" },
+  { poster:"anurag.png", title:"Anurag Singh Live!", performer:"Anurag Singh", date:"Fri, 30 May", time:"8 PM", price:"₹399", lang:"Hindi",
+    about:"Anurag’s solo hour — Delhi sensibility, Bangalore room. Tight, energetic, and big-laugh forward.",
+    url:"https://in.bookmyshow.com/events/anurag-singh-live/ET00468365" },
+  { poster:"aaquib.png", title:"Shaanthiya Thota — Aaquib Kolkar", performer:"Aaquib Kolkar", date:"Fri, 30 May", time:"6 PM", price:"₹299", lang:"Kannada",
+    about:"A Kannada trial show. Aaquib brings hyper-local references and sharp wordplay you won’t see in the English circuit.",
+    url:"https://in.bookmyshow.com/events/aaquib-kolkar-live-kannada-comedy-show/ET00457689" },
+  { poster:"punit.png", title:"New Jokes, Old Tricks · ft. Punit Pania", performer:"Punit Pania", date:"Thu, 5 Jun", time:"10 PM", price:"₹349", lang:"English · Hindi",
+    about:"Punit road-tests new material between his older crowd-killers. A working comic’s notebook on stage.",
+    url:"https://in.bookmyshow.com/events/new-jokes-old-tricks-ft-sumaira-kautuk/ET00320289" },
+  { poster:"konapoly.png", title:"Konapoly — Malayalam Crowd Work", performer:"Various", date:"Fri, 6 Jun", time:"8 PM", price:"₹349", lang:"Malayalam",
+    about:"Malayalam crowd-work, group format. Faster turnover, three comics, one mic, zero scripts.",
+    url:"https://in.bookmyshow.com/events/konapoly-a-malayalam-crowd-work-show/ET00451541" },
+  { poster:"dumphim.png", title:"DUMP HIM — Breakup Comedy", performer:"Themed Lineup", date:"Fri, 13 Jun", time:"6 PM", price:"₹399", lang:"English",
+    about:"Comics share their worst, funniest, most-survivable breakup stories. Therapeutic. Recommended for the recently-single.",
+    url:"https://in.bookmyshow.com/events/swipe-right-dating-comedy/ET00453622" },
+  { poster:"swiperight.png", title:"SWIPE RIGHT — Dating Comedy", performer:"Themed Lineup", date:"Fri, 13 Jun", time:"8 PM", price:"₹399", lang:"English",
+    about:"A themed show on dating in the apps era. Tinder, Hinge, Bumble — all of it, laid out, picked apart, and absolutely roasted.",
+    url:"https://in.bookmyshow.com/events/swipe-right-dating-comedy/ET00453622" },
+  { poster:"yogi.png", title:"Yogi Mayandi and Friends — Tamil Comedy", performer:"Yogi Mayandi", date:"Fri, 20 Jun", time:"6 & 8 PM", price:"₹399", lang:"Tamil",
+    about:"Tamil stand-up double bill. Yogi headlines, with two openers from the Chennai circuit.",
+    url:"https://in.bookmyshow.com/events/third-wheel-squad-a-tamil-comedy-show/ET00452198" },
+  { poster:"vaibhav.png", title:"Mechanical Si Zindagi — Vaibhav Arora", performer:"Vaibhav Arora", date:"Sat, 21 Jun", time:"7 PM", price:"₹399", lang:"Hindi",
+    about:"Vaibhav’s solo show on the soft tyranny of routine. Engineer-turned-comic, and it shows in the best way.",
+    url:"https://in.bookmyshow.com/events/mechanical-si-zindagi-ft-vaibhav-arora/ET00495029" },
+  { poster:"shubham.png", title:"Badtameez — Shubham Shandilya", performer:"Shubham Shandilya", date:"Fri, 18 Jul", time:"8 PM", price:"₹399", lang:"Hindi",
+    about:"A solo show that earns its title. Shubham’s ruder, riskier hour — the kind of set that lives or dies in the first five minutes.",
+    url:"https://in.bookmyshow.com/events/tehelka-stand-up-comedy-feat-shubham-shandilya/ET00333424" },
+];
+
+const grid = document.getElementById('grid');
+document.getElementById('evt-count').textContent = events.length + ' shows';
+
+events.forEach((e, i) => {
+  const a = document.createElement('a');
+  a.className = 'card';
+  a.href = '#';
+  a.dataset.event = i;
+  a.innerHTML = `
+    <img class="card-img" src="assets/posters/${e.poster}" alt="${e.title}" loading="lazy">
+    <div class="card-body">
+      <div class="card-when">${e.date.toUpperCase()} · ${e.time}</div>
+      <div class="card-title">${e.title}</div>
+    </div>`;
+  a.addEventListener('click', ev => { ev.preventDefault(); openDetail(i); });
+  grid.appendChild(a);
+});
+
+document.querySelectorAll('.featured').forEach(el => {
+  el.addEventListener('click', ev => { ev.preventDefault(); openDetail(parseInt(el.dataset.event)); });
+});
+
+document.getElementById('stickyCta').addEventListener('click', ev => {
+  ev.preventDefault();
+  openDetail(0);
+});
+
+function openDetail(i){
+  const e = events[i];
+  document.getElementById('dPoster').src = 'assets/posters/' + e.poster;
+  document.getElementById('dPoster').alt = e.title;
+  document.getElementById('dTitle').textContent = e.title;
+  document.getElementById('dSub').textContent = 'Live stand-up at The Ministry, Koramangala. Hosted in our intimate room — the way comedy should be heard.';
+  document.getElementById('dDate').textContent = e.date;
+  document.getElementById('dTime').textContent = e.time;
+  document.getElementById('dLang').textContent = e.lang;
+  document.getElementById('dAbout').textContent = e.about;
+  document.getElementById('dPerformer').textContent = e.performer;
+  document.getElementById('dInitial').textContent = e.performer.charAt(0);
+  document.getElementById('dPrice').textContent = e.price;
+  document.getElementById('dBook').href = e.url;
+  document.getElementById('detail').classList.add('open');
+  document.body.classList.add('locked');
+  window.scrollTo(0,0);
+  document.getElementById('detail').scrollTop = 0;
+}
+
+function closeDetail(){
+  document.getElementById('detail').classList.remove('open');
+  document.body.classList.remove('locked');
+}
+
+// Close on escape
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDetail(); });
+</script>
+
+</body>
+</html>
