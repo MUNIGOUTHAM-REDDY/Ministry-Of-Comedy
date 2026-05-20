@@ -184,42 +184,109 @@
     color:var(--mute);text-transform:uppercase;
   }
 
-  /* ============ CARD GRID ============ */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  /* ============ REVIEW BAR (top of page) ============ */
+  .review-bar{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    background:linear-gradient(135deg,#FFC93C,#FFA000);
+    color:var(--ink);
+    padding:10px 14px;
+    padding-top:calc(10px + env(safe-area-inset-top));
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;letter-spacing:.1em;font-weight:700;
+    text-transform:uppercase;text-align:center;
+    box-shadow:0 1px 0 rgba(0,0,0,.06);
+  }
+  .review-bar .rb-stars{color:#0A0A0A;letter-spacing:-1px;}
+  .review-bar .rb-text{font-weight:600;}
+  .review-bar .rb-arrow{font-weight:700;}
+
+  /* ============ TONIGHT'S LINEUP (horizontal scroll) ============ */
+  .lineup-section{margin:22px 0 8px;}
+  .lineup-scroller{
+    display:flex;gap:10px;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scroll-snap-type:x mandatory;
+    margin:0 -18px;padding:4px 18px 8px;
+    scrollbar-width:none;
+  }
+  .lineup-scroller::-webkit-scrollbar{display:none;}
+  .lineup-card{
+    flex:0 0 116px;scroll-snap-align:start;
+    display:block;
+  }
+  .lineup-card-img{
+    width:116px;height:116px;border-radius:14px;object-fit:cover;
+    background:#1a1a1a;
+    box-shadow:0 8px 18px -8px rgba(0,0,0,.35);
+  }
+  .lineup-card-name{
+    font-family:'Fraunces',serif;font-weight:600;font-size:12.5px;line-height:1.2;
+    margin-top:8px;letter-spacing:-.1px;
+    display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .lineup-card-time{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--mint-deep);font-weight:700;
+    margin-top:3px;
+  }
+
+  /* ============ DAY TABS ============ */
+  .tab-bar{
+    display:flex;gap:4px;
+    background:#fff;border:1px solid var(--line);
+    border-radius:14px;padding:4px;
+    margin:20px 0 12px;
+    position:sticky;top:0;z-index:30;
+    box-shadow:0 4px 14px -8px rgba(0,0,0,.15);
+  }
+  .tab-btn{
+    flex:1;padding:11px 4px;border-radius:11px;
+    display:flex;align-items:center;justify-content:center;gap:5px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;font-weight:700;color:var(--mute);
+    transition:background .15s ease,color .15s ease;
+  }
+  .tab-btn.active{background:var(--ink);color:var(--mint);}
+  .tab-btn .tab-count{
+    font-family:'Fraunces',serif;font-size:11px;font-weight:600;
+    letter-spacing:0;text-transform:none;opacity:.7;
+  }
+  .tab-btn.active .tab-count{opacity:1;}
+
+  /* ============ CARD GRID (compact 3-col BMS style) ============ */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
   .card{
-    display:block;background:#fff;border-radius:14px;overflow:hidden;
+    display:block;background:#fff;border-radius:11px;overflow:hidden;
     border:1px solid var(--line);
     transition:transform .15s ease;
     position:relative;
   }
-  .card:active{transform:scale(.97);}
+  .card:active{transform:scale(.96);}
   .card-img{
     width:100%;aspect-ratio:3/4;object-fit:cover;background:#1a1a1a;
   }
   .card-when{
-    position:absolute;top:8px;left:8px;
-    background:rgba(10,10,10,.85);color:var(--mint);
-    padding:5px 9px;border-radius:7px;
-    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;
-    text-transform:uppercase;font-weight:600;
+    position:absolute;top:6px;left:6px;
+    background:rgba(10,10,10,.88);color:var(--mint);
+    padding:3px 7px;border-radius:5px;
+    font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;
+    text-transform:uppercase;font-weight:700;
     backdrop-filter:blur(6px);
   }
-  .card-body{padding:10px 11px 12px;}
+  .card-price{
+    position:absolute;bottom:0;right:0;
+    background:var(--mint);color:var(--ink);
+    padding:3px 7px;border-radius:6px 0 0 0;
+    font-family:'Fraunces',serif;font-size:11px;font-weight:700;
+  }
+  .card-body{padding:7px 8px 9px;}
   .card-title{
-    font-family:'Fraunces',serif;font-weight:600;font-size:13.5px;line-height:1.2;
-    letter-spacing:-.1px;
+    font-family:'Fraunces',serif;font-weight:600;font-size:11.5px;line-height:1.2;
+    letter-spacing:-.05px;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-    margin-bottom:4px;min-height:32px;
+    min-height:28px;
   }
-  .card-perf{
-    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;
-    color:var(--mute);text-transform:uppercase;
-    display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
-  }
-
-  /* Tonight + bigger card in day-band when single */
-  .day-band .grid.solo{grid-template-columns:1fr;}
-  .day-band .grid.solo .card-img{aspect-ratio:5/4;}
+  .card-perf{display:none;}
 
   /* ============ MIDDLE WHATSAPP CTA ============ */
   .midcta{
@@ -382,6 +449,13 @@
 </head>
 <body>
 
+<!-- TOP REVIEW BAR -->
+<a class="review-bar" id="reviewBar" href="#" target="_blank" rel="noopener">
+  <span class="rb-stars">★★★★★</span>
+  <span class="rb-text">Loved the show? Leave us a Google review</span>
+  <span class="rb-arrow">→</span>
+</a>
+
 <div class="app">
 
   <div class="status">
@@ -411,41 +485,29 @@
     </a>
   </div>
 
-  <!-- TONIGHT -->
-  <section class="section" id="tonightSection" hidden>
+  <!-- TONIGHT'S LINEUP -->
+  <section class="section lineup-section" id="lineupSection" hidden>
     <div class="section-head">
-      <h2 class="section-title">Tonight <em>·</em> Live</h2>
-      <span class="section-meta" id="tonightCount">—</span>
+      <h2 class="section-title">Tonight's <em>lineup</em></h2>
+      <span class="section-meta" id="lineupCount">—</span>
     </div>
-    <div id="tonightWrap"></div>
+    <div class="lineup-scroller" id="lineupScroller"></div>
   </section>
 
-  <!-- FRIDAY -->
-  <section class="section" id="fridaySection" hidden>
-    <div class="section-head">
-      <h2 class="section-title">This <em>Friday</em></h2>
-      <span class="section-meta" id="fridayDate">—</span>
-    </div>
-    <div class="day-band">
-      <div id="fridayWrap" class="grid"></div>
-    </div>
-  </section>
+  <!-- DAY TABS -->
+  <div class="tab-bar" role="tablist">
+    <button class="tab-btn active" data-tab="today" role="tab">Today<span class="tab-count" id="todayCountTab"></span></button>
+    <button class="tab-btn" data-tab="tomorrow" role="tab">Tomorrow<span class="tab-count" id="tomorrowCountTab"></span></button>
+    <button class="tab-btn" data-tab="weekend" role="tab">Weekend<span class="tab-count" id="weekendCountTab"></span></button>
+  </div>
 
-  <!-- SATURDAY -->
-  <section class="section" id="saturdaySection" hidden>
-    <div class="section-head">
-      <h2 class="section-title">This <em>Saturday</em></h2>
-      <span class="section-meta" id="saturdayDate">—</span>
-    </div>
-    <div class="day-band">
-      <div id="saturdayWrap" class="grid"></div>
-    </div>
-  </section>
+  <!-- TAB GRID -->
+  <div class="grid" id="tabGrid"></div>
 
-  <!-- UPCOMING -->
+  <!-- ALL UPCOMING -->
   <section class="section" id="upcomingSection">
     <div class="section-head">
-      <h2 class="section-title">Upcoming <em>shows</em></h2>
+      <h2 class="section-title">All <em>upcoming</em></h2>
       <span class="section-meta" id="upcomingCount">—</span>
     </div>
     <div id="upcomingWrap" class="grid"></div>
@@ -538,16 +600,19 @@
 // SOCIAL LINKS — replace with your real handles
 // ============================================================
 const SOCIAL = {
-  instagram: "https://www.instagram.com/theministryofcomedy",
-  whatsapp:  "https://wa.me/919999999999",       // TODO: replace with real WhatsApp number
-  subscribe: "https://youtube.com/@ministryofcomedy"
+  instagram:    "https://www.instagram.com/theministryofcomedy",
+  whatsapp:     "https://wa.me/919999999999",       // TODO: replace with real WhatsApp number
+  subscribe:    "https://youtube.com/@ministryofcomedy",
+  bmsVenue:     "https://in.bookmyshow.com/explore/c/venues/ministry-of-comedy-koramangala/mcbk",
+  googleReview: "https://www.google.com/search?q=ministry+of+comedy+koramangala+review" // TODO: replace with the direct "write a review" Place ID link from your Google Business Profile
 };
-const VENUE_LAT_LNG = "https://maps.app.goo.gl/"; // optional
 
 // Apply social links to every CTA on the page
 ['igLink','stickyIg','dShareIg'].forEach(id => document.getElementById(id).href = SOCIAL.instagram);
 ['waLink','stickyWa','midWa','dShareWa'].forEach(id => document.getElementById(id).href = SOCIAL.whatsapp);
 document.getElementById('subLink').href = SOCIAL.subscribe;
+document.getElementById('reviewBar').href = SOCIAL.googleReview;
+document.getElementById('stickyBook').href = SOCIAL.bmsVenue;
 
 // ============================================================
 // EVENTS DATA
@@ -664,75 +729,38 @@ document.getElementById('todayLabel').textContent = today.toLocaleString('en',{w
 events.forEach(e => { e.d = parseEventDate(e.date); });
 events.sort((a,b) => (a.d?.getTime()||0) - (b.d?.getTime()||0));
 
-// bucket
-const tonight = [];
-const fridayEvents = [];
-const saturdayEvents = [];
-const upcoming = [];
+// helpers
+function addDays(d, n){ const x = new Date(d); x.setDate(x.getDate()+n); return x; }
+const tomorrowDate = addDays(today, 1);
+function inThisWeekend(d){
+  // Fri/Sat/Sun within next 7 days, but EXCLUDING today and tomorrow (to avoid overlap with other tabs)
+  const dow = d.getDay();
+  if(![5,6,0].includes(dow)) return false;
+  if(sameDay(d, today) || sameDay(d, tomorrowDate)) return false;
+  const diff = Math.floor((d - today) / 86400000);
+  return diff >= 0 && diff <= 7;
+}
 
-const nextFri = nextWeekday(5);
-const nextSat = nextWeekday(6);
-// If today IS friday/saturday, include today's bucket as that day
-const todayDow = today.getDay();
-const thisFri = todayDow === 5 ? today : nextFri;
-const thisSat = todayDow === 6 ? today : nextSat;
+// ------------------------------------------------------------
+// BUCKETS — today, tomorrow, this weekend, all later
+// ------------------------------------------------------------
+const todayList    = [];
+const tomorrowList = [];
+const weekendList  = [];
+const laterList    = [];
 
 events.forEach((e,i) => {
   if(!e.d || e.d < today) return; // skip past
-  if(sameDay(e.d, today)){ tonight.push({...e,idx:i}); return; }
-  if(sameDay(e.d, thisFri) && e.d !== today){ fridayEvents.push({...e,idx:i}); return; }
-  if(sameDay(e.d, thisSat) && e.d !== today){ saturdayEvents.push({...e,idx:i}); return; }
-  upcoming.push({...e,idx:i});
+  e.idx = i;
+  if(sameDay(e.d, today))         { todayList.push(e);    return; }
+  if(sameDay(e.d, tomorrowDate))  { tomorrowList.push(e); return; }
+  if(inThisWeekend(e.d))          { weekendList.push(e);  return; }
+  laterList.push(e);
 });
 
-// ---- TONIGHT ----
-if(tonight.length){
-  const sec = document.getElementById('tonightSection');
-  sec.hidden = false;
-  document.getElementById('tonightCount').textContent = tonight.length + ' show' + (tonight.length>1?'s':'');
-  const wrap = document.getElementById('tonightWrap');
-  tonight.forEach(e => {
-    const card = document.createElement('a');
-    card.className = 'tonight-card';
-    card.href = '#';
-    card.dataset.idx = e.idx;
-    card.innerHTML = `
-      <span class="pulse"><span class="d"></span> Tonight</span>
-      <img class="tonight-card-img" src="${e.poster}" alt="${e.title}">
-      <div class="tonight-body">
-        <div class="tonight-meta">${e.time} · ${e.lang}</div>
-        <div class="tonight-title">${e.title}</div>
-        <div class="tonight-cta">
-          <span>Book ${e.price} →</span>
-          <span class="arrow">→</span>
-        </div>
-      </div>`;
-    card.addEventListener('click', ev => { ev.preventDefault(); openDetail(e.idx); });
-    wrap.appendChild(card);
-  });
-}
-
-// ---- FRIDAY ----
-function renderDayBand(arr, wrapId, sectionId, dateLabelId, dayDate){
-  if(!arr.length) return;
-  document.getElementById(sectionId).hidden = false;
-  document.getElementById(dateLabelId).textContent = dayDate.getDate() + ' ' + dayDate.toLocaleString('en',{month:'short'}).toUpperCase();
-  const wrap = document.getElementById(wrapId);
-  if(arr.length === 1) wrap.classList.add('solo');
-  arr.forEach(e => wrap.appendChild(buildCard(e)));
-}
-renderDayBand(fridayEvents,'fridayWrap','fridaySection','fridayDate', thisFri);
-renderDayBand(saturdayEvents,'saturdayWrap','saturdaySection','saturdayDate', thisSat);
-
-// ---- UPCOMING ----
-const upWrap = document.getElementById('upcomingWrap');
-if(upcoming.length === 0){
-  upWrap.outerHTML = '<div class="empty"><b>More dates dropping soon</b>Follow us on Instagram for first dibs.</div>';
-} else {
-  document.getElementById('upcomingCount').textContent = upcoming.length + ' show' + (upcoming.length>1?'s':'');
-  upcoming.forEach(e => upWrap.appendChild(buildCard(e)));
-}
-
+// ------------------------------------------------------------
+// CARD BUILDER (used by tabs + upcoming)
+// ------------------------------------------------------------
 function buildCard(e){
   const a = document.createElement('a');
   a.className = 'card';
@@ -740,12 +768,88 @@ function buildCard(e){
   a.innerHTML = `
     <span class="card-when">${e.d ? formatLong(e.d).toUpperCase() : e.date.toUpperCase()} · ${e.time}</span>
     <img class="card-img" src="${e.poster}" alt="${e.title}" loading="lazy">
+    <span class="card-price">${e.price}</span>
     <div class="card-body">
       <div class="card-title">${e.title}</div>
-      <div class="card-perf">${e.performer}</div>
     </div>`;
   a.addEventListener('click', ev => { ev.preventDefault(); openDetail(e.idx); });
   return a;
+}
+
+// ------------------------------------------------------------
+// TONIGHT'S LINEUP (horizontal scroll of performers)
+// ------------------------------------------------------------
+if(todayList.length){
+  document.getElementById('lineupSection').hidden = false;
+  document.getElementById('lineupCount').textContent = todayList.length + ' show' + (todayList.length>1?'s':'');
+  const scroller = document.getElementById('lineupScroller');
+  todayList.forEach(e => {
+    const card = document.createElement('a');
+    card.className = 'lineup-card';
+    card.href = '#';
+    card.innerHTML = `
+      <img class="lineup-card-img" src="${e.poster}" alt="${e.performer}" loading="lazy">
+      <div class="lineup-card-name">${e.performer}</div>
+      <div class="lineup-card-time">${e.time}</div>`;
+    card.addEventListener('click', ev => { ev.preventDefault(); openDetail(e.idx); });
+    scroller.appendChild(card);
+  });
+}
+
+// ------------------------------------------------------------
+// TABS — today / tomorrow / weekend
+// ------------------------------------------------------------
+const tabSources = { today: todayList, tomorrow: tomorrowList, weekend: weekendList };
+const tabEmpty = {
+  today:    { title: 'No shows tonight',           sub: 'Tap Tomorrow or Weekend below.' },
+  tomorrow: { title: 'Nothing on the books for tomorrow', sub: 'Check the weekend tab.' },
+  weekend:  { title: 'Weekend lineup dropping soon', sub: 'Scroll down for all upcoming shows.' }
+};
+
+// Set tab counts
+document.getElementById('todayCountTab').textContent    = todayList.length    ? '· ' + todayList.length    : '';
+document.getElementById('tomorrowCountTab').textContent = tomorrowList.length ? '· ' + tomorrowList.length : '';
+document.getElementById('weekendCountTab').textContent  = weekendList.length  ? '· ' + weekendList.length  : '';
+
+function renderTab(name){
+  const grid = document.getElementById('tabGrid');
+  grid.innerHTML = '';
+  const arr = tabSources[name] || [];
+  if(arr.length === 0){
+    const em = tabEmpty[name];
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1;"><b>${em.title}</b>${em.sub}</div>`;
+    return;
+  }
+  arr.forEach(e => grid.appendChild(buildCard(e)));
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTab(btn.dataset.tab);
+  });
+});
+
+// Default tab: today if shows, else tomorrow, else weekend
+const defaultTab = todayList.length ? 'today' : (tomorrowList.length ? 'tomorrow' : 'weekend');
+document.querySelector(`.tab-btn[data-tab="${defaultTab}"]`).classList.remove('active');
+document.querySelectorAll('.tab-btn').forEach(b => {
+  if(b.dataset.tab === defaultTab) b.classList.add('active');
+  else b.classList.remove('active');
+});
+renderTab(defaultTab);
+
+// ------------------------------------------------------------
+// ALL UPCOMING (everything beyond this weekend, plus weekend leftovers for completeness)
+// ------------------------------------------------------------
+const upWrap = document.getElementById('upcomingWrap');
+const allFuture = [...todayList, ...tomorrowList, ...weekendList, ...laterList];
+if(allFuture.length === 0){
+  upWrap.outerHTML = '<div class="empty"><b>More dates dropping soon</b>Follow us on Instagram for first dibs.</div>';
+} else {
+  document.getElementById('upcomingCount').textContent = allFuture.length + ' show' + (allFuture.length>1?'s':'');
+  allFuture.forEach(e => upWrap.appendChild(buildCard(e)));
 }
 
 // ============================================================
@@ -774,14 +878,10 @@ function closeDetail(){
 }
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDetail(); });
 
-// Smooth scroll on sticky Book button → upcoming or tonight
-document.getElementById('stickyBook').addEventListener('click', ev => {
-  ev.preventDefault();
-  if(tonight.length){ openDetail(tonight[0].idx); return; }
-  if(fridayEvents.length){ openDetail(fridayEvents[0].idx); return; }
-  if(saturdayEvents.length){ openDetail(saturdayEvents[0].idx); return; }
-  document.getElementById('upcomingSection').scrollIntoView({behavior:'smooth'});
-});
+// Sticky Book Tickets goes to BMS venue listing (href set above via SOCIAL.bmsVenue)
+// Add target="_blank" so it opens in a new tab without losing place on our site
+document.getElementById('stickyBook').setAttribute('target', '_blank');
+document.getElementById('stickyBook').setAttribute('rel', 'noopener');
 </script>
 
 </body>
